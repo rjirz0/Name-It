@@ -24,6 +24,7 @@
             <li><a href="#programs">Programs</a></li>
             <li><a href="#work">Student Work</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><a href="guide.html" class="nav-guide-btn">3rd Grade Guide 🎒</a></li>
           </ul>
         </nav>
       </div>
@@ -31,6 +32,25 @@
 
     <!-- Main Content Area -->
     <main id="main-content">
+      <!-- Capybara & Otter Video Showcase -->
+      <section class="video-showcase" aria-label="Capybara and Otter Jet Ski Video">
+        <div class="container">
+          <div class="video-container" style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; box-shadow: 0 4px 20px rgba(0,0,0,0.15); overflow: hidden; border-radius: 20px; will-change: transform; background-color: #0b0f19;">
+            <iframe id="showcase-iframe" loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;"
+              src="https://www.canva.com/design/DAHPHQI-A3A/rojAzNXbOERapRYXd8cnBQ/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen" aria-label="Tropical Capybara and Otter Jet Ski Video">
+            </iframe>
+          </div>
+          <div style="text-align: center; margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <div>
+              <a href="https://www.canva.com/design/DAHPHQI-A3A/rojAzNXbOERapRYXd8cnBQ/watch?utm_content=DAHPHQI-A3A&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener" style="color: var(--primary); font-weight: 600; text-decoration: none;">Tropical-Capybara-Plus-Otter-Jetski</a> by DrPlaguenstein
+            </div>
+            <button onclick="document.getElementById('showcase-iframe').src = 'https://www.canva.com/design/DAHPHQI-A3A/rojAzNXbOERapRYXd8cnBQ/watch?embed';" class="btn btn-outline" style="padding: 6px 16px; font-size: 0.85rem; border-radius: 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; background-color: var(--surface); border: 1.5px solid var(--primary); color: var(--primary); font-weight: 600; transition: all 0.2s ease;">
+              <span>Replay Video 🔄</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <!-- Hero Section -->
       <section id="hero" class="hero" aria-labelledby="hero-title">
         <div class="container hero-grid">
@@ -162,13 +182,30 @@
                 />
                 <div class="profile-info">
                   <h3>Alex M.</h3>
-                  <span class="student-title">Built "Capy Weather Widget"</span>
+                  <span class="student-title">Built "Tropical Capybara &amp; Otter Jetski"</span>
                 </div>
               </div>
               <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
               <p class="quote">
                 "Before Capybara Testing, coding looked like an alien language. Within four weeks, I built my first responsive web project from scratch!"
               </p>
+              
+              <!-- Student Video Embed Preview (Launches Lightbox Modal to avoid cramped icons) -->
+              <div class="student-project-video-preview" onclick="openVideoModal()" aria-label="Play Alex M's Tropical Capybara &amp; Otter Jetski video">
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 16px; text-align: center;">
+                  <div style="font-size: 2.2rem; margin-bottom: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));">🌴 🦦 🚤 🌊</div>
+                  <div class="play-btn-circle">
+                    <span style="font-size: 1.4rem; color: var(--primary); margin-left: 4px; transition: color 0.2s ease;">▶</span>
+                  </div>
+                  <span style="color: white; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Click to Play Video</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; flex-wrap: wrap; gap: 8px;">
+                <a href="https://www.canva.com/design/DAHPHQI-A3A/rojAzNXbOERapRYXd8cnBQ/watch?utm_content=DAHPHQI-A3A&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener" style="font-size: 0.8rem; color: var(--primary); text-decoration: none; font-weight: 700;">🔗 View Project on Canva</a>
+                <button onclick="openVideoModal()" style="background: none; border: none; color: var(--primary); font-size: 0.8rem; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0; display: inline-flex; align-items: center; gap: 4px;">
+                  Play Video 🔄
+                </button>
+              </div>
             </article>
 
             <!-- Testimonial 2 -->
@@ -312,6 +349,52 @@
         </div>
       </div>
     </footer>
+    <!-- Lightbox Video Modal (Theater Mode for clean, non-blocked player experience) -->
+    <div id="video-modal" class="video-modal" aria-modal="true" role="dialog" aria-label="Student Video Player">
+      <div class="modal-content-wrapper">
+        <button onclick="closeVideoModal()" class="modal-close-btn" aria-label="Close video player">&times;</button>
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; background: #000;">
+          <iframe id="modal-iframe" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;" src="" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openVideoModal() {
+        var modal = document.getElementById('video-modal');
+        var iframe = document.getElementById('modal-iframe');
+        if (modal && iframe) {
+          iframe.src = "https://www.canva.com/design/DAHPHQI-A3A/rojAzNXbOERapRYXd8cnBQ/watch?embed";
+          modal.style.display = 'flex';
+          document.body.style.overflow = 'hidden'; // Lock main page scrolling
+        }
+      }
+
+      function closeVideoModal() {
+        var modal = document.getElementById('video-modal');
+        var iframe = document.getElementById('modal-iframe');
+        if (modal && iframe) {
+          iframe.src = ""; // Unload iframe to stop playback
+          modal.style.display = 'none';
+          document.body.style.overflow = ''; // Restore main page scrolling
+        }
+      }
+
+      // Close when clicking outside content container
+      window.addEventListener('click', function(e) {
+        var modal = document.getElementById('video-modal');
+        if (e.target === modal) {
+          closeVideoModal();
+        }
+      });
+
+      // Close when pressing the escape key
+      window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeVideoModal();
+        }
+      });
+    </script>
   </body>
 </html>
 
