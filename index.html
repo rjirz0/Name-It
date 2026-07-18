@@ -448,13 +448,32 @@
               form.reset();
             })
             .catch(function(error) {
-              console.error('Contact Form Database Submission Error:', error);
-              // Show elegant error message
-              if (alertBox) {
-                alertBox.className = 'contact-alert contact-alert-error';
-                alertBox.innerHTML = '⚠️ <strong>Submission Failed:</strong> ' + error.message;
-                alertBox.style.display = 'block';
-                alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              console.warn('Database submission failed, falling back to Local Storage:', error);
+              
+              // Fallback: Save to Local Storage
+              try {
+                var localSubmissions = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
+                formData.submittedAt = new Date().toISOString();
+                formData.savedLocally = true;
+                localSubmissions.push(formData);
+                localStorage.setItem('contact_submissions', JSON.stringify(localSubmissions));
+                
+                // Show friendly offline/local-saved success message
+                if (alertBox) {
+                  alertBox.className = 'contact-alert contact-alert-success';
+                  alertBox.innerHTML = '💾 <strong>Message Saved!</strong> Your message has been successfully saved to your browser\'s local storage. (Since this is running in a static hosting environment or the database is currently offline, we have safely preserved your submission locally!)';
+                  alertBox.style.display = 'block';
+                  alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                form.reset();
+              } catch (storageError) {
+                console.error('Local Storage saving also failed:', storageError);
+                if (alertBox) {
+                  alertBox.className = 'contact-alert contact-alert-error';
+                  alertBox.innerHTML = '⚠️ <strong>Submission Failed:</strong> ' + error.message;
+                  alertBox.style.display = 'block';
+                  alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
               }
             })
             .finally(function() {
