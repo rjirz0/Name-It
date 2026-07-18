@@ -257,7 +257,8 @@
             <p>Ready to start learning? Have a question for our mentors? Reach out below.</p>
           </div>
           <div class="contact-container">
-            <form action="#" method="post" class="contact-form">
+            <div id="contact-alert" class="contact-alert" style="display: none;"></div>
+            <form id="contact-form" class="contact-form">
               <div class="form-group">
                 <label for="name">Full Name <span class="required" aria-hidden="true">*</span></label>
                 <input 
@@ -392,6 +393,78 @@
       window.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
           closeVideoModal();
+        }
+      });
+
+      // Handle contact form submission and save to MongoDB
+      document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('contact-form');
+        var alertBox = document.getElementById('contact-alert');
+
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Set loading/sending state
+            var submitBtn = form.querySelector('button[type="submit"]');
+            var originalBtnText = submitBtn ? submitBtn.innerHTML : 'Send Message';
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = 'Sending Message... ⏳';
+            }
+
+            // Collect form inputs
+            var formData = {
+              name: document.getElementById('name').value,
+              email: document.getElementById('email').value,
+              subject: document.getElementById('subject').value,
+              message: document.getElementById('message').value
+            };
+
+            // Send standard POST request to MongoDB saving endpoint
+            fetch('/api/contact', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(formData)
+            })
+            .then(function(response) {
+              return response.json().then(function(data) {
+                if (!response.ok) {
+                  throw new Error(data.error || 'Server responded with error: ' + response.status);
+                }
+                return data;
+              });
+            })
+            .then(function(data) {
+              // Show beautiful success message
+              if (alertBox) {
+                alertBox.className = 'contact-alert contact-alert-success';
+                alertBox.innerHTML = '🎉 <strong>Success!</strong> Your message has been saved to our database. We will get back to you soon!';
+                alertBox.style.display = 'block';
+                alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+              form.reset();
+            })
+            .catch(function(error) {
+              console.error('Contact Form Database Submission Error:', error);
+              // Show elegant error message
+              if (alertBox) {
+                alertBox.className = 'contact-alert contact-alert-error';
+                alertBox.innerHTML = '⚠️ <strong>Submission Failed:</strong> ' + error.message;
+                alertBox.style.display = 'block';
+                alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            })
+            .finally(function() {
+              // Restore submit button
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+              }
+            });
+          });
         }
       });
     </script>

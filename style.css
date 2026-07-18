@@ -484,6 +484,31 @@ textarea.form-control {
   }
 }
 
+/* Contact Submission Alert Box */
+.contact-alert {
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.contact-alert-success {
+  background-color: #EDF3ED;
+  color: var(--primary-dark);
+  border-color: var(--secondary);
+}
+
+.contact-alert-error {
+  background-color: #FDF2F2;
+  color: #9B1C1C;
+  border-color: #F8B4B4;
+}
+
 /* Footer Section */
 .footer {
   background-color: #111827;
