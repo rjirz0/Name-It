@@ -421,8 +421,19 @@
               message: document.getElementById('message').value
             };
 
+            // --- SECURE BACKEND CONFIGURATION ---
+            // For local development, this is left empty to automatically use the local server (relative path '/api/contact').
+            // Once you deploy your backend to Render, paste your Render URL below (e.g., 'https://my-capybara-backend.onrender.com').
+            var BACKEND_URL = ''; 
+
+            var apiEndpoint = '/api/contact';
+            if (BACKEND_URL) {
+              // Ensure we don't have a double slash and append the endpoint
+              apiEndpoint = BACKEND_URL.replace(/\/$/, '') + '/api/contact';
+            }
+
             // Send standard POST request to MongoDB saving endpoint
-            fetch('/api/contact', {
+            fetch(apiEndpoint, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

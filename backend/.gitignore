@@ -1,0 +1,10 @@
+# Node modules / dependencies
+node_modules/
+
+# Local Environment Variables containing sensitive passwords/API keys
+.env
+.env.local
+
+# Operating system files
+.DS_Store
+Thumbs.db

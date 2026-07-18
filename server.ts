@@ -3,11 +3,19 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import { MongoClient, Db } from "mongodb";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
+
+// Enable Cross-Origin Resource Sharing (CORS) so your GitHub Pages site can securely talk to this backend
+app.use(cors({
+  origin: "*", // In production, you can replace "*" with your specific GitHub Pages URL (e.g., "https://yourusername.github.io") for maximum security!
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Middleware to parse JSON and url-encoded payloads
 app.use(express.json());
