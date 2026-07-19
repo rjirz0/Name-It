@@ -18,10 +18,38 @@ connectDB();
 // Helmet adds secure HTTP headers to shield your server from common web attacks
 app.use(helmet());
 
-// CORS allows your frontend hosted on GitHub Pages to safely talk to this backend
+// CORS allows your frontend to securely communicate with this backend
+const allowedOrigins = [
+  "https://metropunkstudios.com",
+  "https://www.metropunkstudios.com",
+  "https://metropunkstudios.online",
+  "https://www.metropunkstudios.online"
+];
+
+const isOriginAllowed = (origin) => {
+  if (!origin) return true; // Allow non-browser requests
+  
+  // Match custom domains
+  if (allowedOrigins.some(o => origin.startsWith(o))) return true;
+  
+  // Match local development and AI Studio previews
+  if (origin.includes("localhost") || origin.includes("127.0.0.1") || origin.includes("run.app")) return true;
+  
+  // Match GitHub Pages sites
+  if (origin.endsWith(".github.io")) return true;
+  
+  return false;
+};
+
 app.use(
   cors({
-    origin: "*", // Allows any website during setup. You can change this to your specific GitHub Pages URL!
+    origin: (origin, callback) => {
+      if (isOriginAllowed(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Request blocked by secure CORS configuration."));
+      }
+    },
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
   })

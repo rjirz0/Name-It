@@ -422,22 +422,25 @@
             };
 
             // --- SECURE BACKEND CONFIGURATION ---
-            // Your production Render backend URL
-            var BACKEND_URL = 'https://name-it-eqn6.onrender.com'; 
+            // Your custom production GoDaddy domain connected directly to Render!
+            // If the custom domain is ever offline, you can fallback to: 'https://name-it-eqn6.onrender.com'
+            var BACKEND_URL = 'https://metropunkstudios.com'; 
 
             var apiEndpoint = '/api/contact';
             
-            // Automatically detect if we are in a development or preview environment.
-            // If we are running locally (localhost) or in the AI Studio preview (run.app),
-            // we use the relative path '/api/contact' to talk to the local container server.
-            // If we are running on your live production site (GitHub Pages / GoDaddy custom domain),
-            // we securely route the request to your production Render backend!
-            var isLocalDev = window.location.hostname === 'localhost' || 
+            // Detect if the frontend is served on the same host as the backend.
+            // This is true during local development (localhost), in the AI Studio preview (*.run.app),
+            // and when visiting your custom domains directly!
+            // When on the same host, we use relative paths ('/api/contact') which are faster and bypass CORS entirely.
+            var isSameHost = window.location.hostname === 'localhost' || 
                              window.location.hostname === '127.0.0.1' || 
-                             window.location.hostname.includes('run.app');
+                             window.location.hostname.includes('run.app') ||
+                             window.location.hostname.includes('metropunkstudios.com') ||
+                             window.location.hostname.includes('metropunkstudios.online') ||
+                             window.location.hostname.includes('onrender.com');
 
-            if (BACKEND_URL && !isLocalDev) {
-              // Ensure we don't have a double slash and append the endpoint
+            if (BACKEND_URL && !isSameHost) {
+              // If loaded from a different host (e.g. GitHub Pages), securely route the API call to your production custom domain
               apiEndpoint = BACKEND_URL.replace(/\/$/, '') + '/api/contact';
             }
 

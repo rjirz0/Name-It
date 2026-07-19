@@ -10,9 +10,37 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-// Enable Cross-Origin Resource Sharing (CORS) so your GitHub Pages site can securely talk to this backend
+// Enable Cross-Origin Resource Sharing (CORS) with secure, adaptive origin checking
+const allowedOrigins = [
+  "https://metropunkstudios.com",
+  "https://www.metropunkstudios.com",
+  "https://metropunkstudios.online",
+  "https://www.metropunkstudios.online"
+];
+
+const isOriginAllowed = (origin: string | undefined): boolean => {
+  if (!origin) return true; // Allow server-to-server or tools like Curl
+  
+  // Match custom domains
+  if (allowedOrigins.some(o => origin.startsWith(o))) return true;
+  
+  // Match local development and AI Studio previews
+  if (origin.includes("localhost") || origin.includes("127.0.0.1") || origin.includes("run.app")) return true;
+  
+  // Match GitHub Pages sites
+  if (origin.endsWith(".github.io")) return true;
+  
+  return false;
+};
+
 app.use(cors({
-  origin: "*", // In production, you can replace "*" with your specific GitHub Pages URL (e.g., "https://yourusername.github.io") for maximum security!
+  origin: (origin, callback) => {
+    if (isOriginAllowed(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Request blocked by secure CORS configuration."));
+    }
+  },
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
