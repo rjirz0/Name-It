@@ -422,12 +422,21 @@
             };
 
             // --- SECURE BACKEND CONFIGURATION ---
-            // For local development, this is left empty to automatically use the local server (relative path '/api/contact').
-            // Once you deploy your backend to Render, paste your Render URL below (e.g., 'https://my-capybara-backend.onrender.com').
-            var BACKEND_URL = ''; 
+            // Your production Render backend URL
+            var BACKEND_URL = 'https://name-it-eqn6.onrender.com'; 
 
             var apiEndpoint = '/api/contact';
-            if (BACKEND_URL) {
+            
+            // Automatically detect if we are in a development or preview environment.
+            // If we are running locally (localhost) or in the AI Studio preview (run.app),
+            // we use the relative path '/api/contact' to talk to the local container server.
+            // If we are running on your live production site (GitHub Pages / GoDaddy custom domain),
+            // we securely route the request to your production Render backend!
+            var isLocalDev = window.location.hostname === 'localhost' || 
+                             window.location.hostname === '127.0.0.1' || 
+                             window.location.hostname.includes('run.app');
+
+            if (BACKEND_URL && !isLocalDev) {
               // Ensure we don't have a double slash and append the endpoint
               apiEndpoint = BACKEND_URL.replace(/\/$/, '') + '/api/contact';
             }
