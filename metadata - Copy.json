@@ -1,0 +1,6 @@
+{
+  "name": "Capybara Testing",
+  "description": "Capybara Testing introduces complete beginners to coding through easy-to-understand lessons, real-world projects, and a supportive coding community.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
